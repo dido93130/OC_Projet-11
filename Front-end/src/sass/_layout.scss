@@ -1,0 +1,57 @@
+// Variables pour les couleurs, les espacements, etc.
+$color-bg-dark: #12002b;
+$color-text: #2c3e50;
+$color-primary: #00bc77;
+
+// Header
+.header {
+  margin-bottom: 2rem;
+  color: #fff;
+}
+
+// Main content area
+.main {
+	flex: 1;
+	&-nav {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 5px 20px;
+		a {
+			color: $color-text;
+			font-weight: bold;
+			&.router-link-exact-active {
+				color: $color-primary;
+			}
+		}
+		&-item {
+			margin-right: 0.5rem;      
+			text-decoration: none;
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+		&-logo {
+			display: flex;
+			align-items: center;
+			&-image {
+				width: 200px;
+				max-width: 100%;
+			}
+		}
+	}
+}
+
+
+// Footer
+.footer {
+	display: flex;
+	justify-content: center;
+	padding: 2rem 0 1.5rem;
+	border-top: 2px solid #ccc;
+	&-text {
+		margin: 0;
+		padding: 0;
+	}
+}
+
