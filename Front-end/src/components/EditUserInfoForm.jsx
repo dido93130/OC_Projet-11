@@ -12,6 +12,8 @@ const EditUserInfoForm = ({ formData, handleInputChange, handleSaveClick, handle
         value={formData?.newUserName || ''}
         onChange={handleInputChange}
         placeholder={formData?.userName}
+        aria-label="User name"
+        aria-required="true"
       />
       </div >
       <br/>
@@ -24,6 +26,7 @@ const EditUserInfoForm = ({ formData, handleInputChange, handleSaveClick, handle
         value={formData?.newFirstName || ''}
         placeholder={formData.firstname }
         disabled // Les champs first name et last name sont désactivés et non modifiables
+        aria-label="First name"
       />
       </div>
       <br/>
@@ -36,6 +39,7 @@ const EditUserInfoForm = ({ formData, handleInputChange, handleSaveClick, handle
         value={formData?.newLastName || ''}
         placeholder={formData.lastName}
         disabled // Les champs first name et last name sont désactivés et non modifiables
+        aria-label="Last name"
       />
       </div>
       <br/>
