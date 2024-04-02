@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchUserProfile, logout } from '../actions/authActions'; // Importez la fonction logout depuis vos actions authActions
+import logo from '../assets/images/argentBankLogo.webp'
 
 const Header = () => {
   const isConnected = useSelector(state => state.user.isConnected);
@@ -39,7 +40,7 @@ const Header = () => {
       <Link className="main-nav-logo" to="/">
         <img
           className="main-nav-logo-image"
-          src="/argentBankLogo.png"
+          src={logo}
           alt="Argent Bank Logo"
           aria-label="Argent Bank"
         />

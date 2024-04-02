@@ -2,16 +2,16 @@ import React from 'react';
 import FeaturesItemData from '../data/featuresItemData.json';
 import Hero from '../components/Hero';
 import Feature from '../components/Feature';
-import iconChat from "../assets/icon-chat.png";
-import iconMoney from "../assets/icon-money.png";
-import iconSecurity from "../assets/icon-security.png";
+import iconChat from "../assets/icons/icon-chat.webp";
+import iconMoney from "../assets/icons/icon-money.webp";
+import iconSecurity from "../assets/icons/icon-security.webp";
 
 
 const HomePage = () => {
   const imageData = {
-    "icon-chat.png": iconChat,
-    "icon-money.png": iconMoney,
-    "icon-security.png": iconSecurity
+    "icon-chat.webp": iconChat,
+    "icon-money.webp": iconMoney,
+    "icon-security.webp": iconSecurity
 }
 
   return (
