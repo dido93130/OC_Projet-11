@@ -1,0 +1,43 @@
+.account {	
+	@media (min-width: 720px) {
+		flex-direction: row;
+	}	
+}
+
+.transaction-button {	
+	@media (min-width: 720px) {
+		width: 200px;
+	}
+}
+
+.hero {
+	@media (min-width: 920px) {
+		height: 400px;
+		background-position: 0% 33%;
+	}
+	&-content {		
+		@media (min-width: 920px) {
+			position: absolute;
+			top: 50px;
+			right: 50px;
+			width: 300px;
+			margin: 2rem;
+		}
+		.subtitle {			
+			@media (min-width: 920px) {
+				font-size: 1.5rem;
+			}
+		}
+		.text {			
+			@media (min-width: 920px) {
+				font-size: 1.2rem;
+			}
+		}
+	}
+}
+
+.features {	
+	@media (min-width: 920px) {
+		flex-direction: row;
+	}
+}
