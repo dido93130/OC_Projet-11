@@ -41,3 +41,17 @@
 		flex-direction: row;
 	}
 }
+
+.error {
+    @media (max-width: 920px) {
+		min-height: 680px;		
+	}
+    @media (min-width: 1900px) {
+		min-height: 820px;
+	}
+	.text-error {
+		@media (max-width: 920px) {
+			font-size: 1.2rem;;		
+		}		
+	  }    
+}

@@ -13,3 +13,29 @@ html {
     flex-direction: column;
     min-height: 100vh;
   }
+
+  .error { 
+    min-height: 610px;
+    width: 100%;    
+    .green-error { 
+       margin-top: 6rem;
+       width: 45%;
+    }
+    .text-error {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-top: 2rem;
+    }
+    .button-404 {
+       align-items: center;
+       background-color: #00bc77;
+       border-color: #00bc77;
+       color: #fff;
+       font-size: 1.1rem;
+       font-weight: bold;
+       margin-bottom: 2rem;
+       margin-top: 2rem;
+       max-width: 12.5rem;
+       padding: 0.8rem;
+    }
+  }
