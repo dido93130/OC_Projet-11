@@ -1,0 +1,329 @@
+swagger: '2.0'
+info:
+  title: Bank Argent API documentation
+  description: Contains all available API endpoints in this codebase
+  version: '1.0.0'
+  termsOfService: 'http://swagger.io/terms/'
+host: localhost:3001
+basePath: /api/v1
+schemes:
+  - http
+paths:
+  /user/login:
+    post:
+      tags:
+        - User Module
+      summary: Login
+      description: API for Login
+      parameters:
+        - in: body
+          name: body
+          description: Login Payload
+          required: true
+          schema:
+            $ref: '#/definitions/Login'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Login Successfully
+          schema:
+            $ref: '#/definitions/LoginResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/signup:
+    post:
+      tags:
+        - User Module
+      summary: Signup
+      description: API for Signup
+      parameters:
+        - in: body
+          name: body
+          description: Signup Payload
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Signup Successfully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/profile:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for fetching a user profile
+      #produces:
+       # - application/json
+      responses:
+        '200':
+          description: User profile retrieved successully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for updating a user profile
+      parameters:
+        - in: body
+          name: body
+          description: Update user profile attributes
+          required: true
+          schema:
+            $ref: '#/definitions/UserProfile'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User profile retrieved successully
+          schema:
+            $ref: '#/definitions/ApiResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+definitions:
+  User:
+    properties:
+      email:
+        type: string
+        description: user email
+      password:
+        type: string
+        description: user password
+      firstName:
+        type: string
+        description: user first name
+      lastName:
+        type: string
+        description: user last name
+      userName:
+        type: string
+        description: user public name
+  Login:
+    properties:
+      email:
+        type: string
+        description: user email
+      password:
+        type: string
+        description: user password
+  ApiResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          id:
+            type: string
+          email:
+            type: string
+  LoginResponse:
+    type: object
+    properties:
+      token:
+        type: string
+  UserProfile:
+    type: object
+    properties:
+      userName:
+        type: string
+/user/account:
+  get: 
+    tags:
+      - Accounts and Transactions Module
+    summary: Get all user accounts
+    description: API for retrieving all user accounts
+    security:
+      - Bearer: []
+    responses: 
+      '200':
+        description: All accounts retrieved successfully
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/AccountResponse'
+      '401':
+        description: Unauthorized user
+      '500':
+        description: Internal Server Error
+/account/{accountID}/transactions:
+  get:
+    tags:
+      - Accounts and Transactions Module
+    summary: Get account transactions
+    description: API for retrieving list of transactions associated with an account
+    security: 
+      - Bearer: []
+    parameters:
+      - in: path
+        name: accountID
+        description: ID of an account
+        required: true
+        type: string
+    responses:
+      '200':
+        description: All transactions retrieved successfully
+        schema: 
+          type: array
+          items:
+            $ref: '#/definitions/TransactionsResponse'
+      '401':
+        description: Unauthorized user
+      '404': 
+        description: Account not found
+      '500':
+        description: Internal Server Error
+/transactions/{transactionID}/category:
+  patch:
+    tags:
+      - Accounts and Transactions Module
+    summary: Update transaction category
+    description: API for updating category of a transaction
+    security: 
+      - Bearer: []
+    parameters:
+      - in: path
+        name: transactionID
+        description: ID of a transaction
+        required: true
+        type: string
+      - in: body
+        name: category
+        description: Modified transaction category
+        required: true
+        schema:
+          $ref: '#/definitions/TransactionCategory'
+    responses:
+      '200':
+        description: Transaction category modified successfully
+        schema: 
+          $ref: '#/definitions/TransactionCategory'
+      '401': 
+        description: Unauthorized user
+      '404': 
+        description: Transaction not found
+      '500': 
+        description: Internal Server Error
+/transactions/{transactionID}/note:
+  post:
+    tags:
+      - Accounts and Transactions Module
+    summary: Add transaction note
+    description: API for adding a note to a transaction
+    security: 
+      - Bearer: []
+    parameters:
+      - in: path
+        name: transactionID
+        description: ID of a transaction
+        required: true
+        type: string
+      - in: body
+        name: note
+        description: New transaction note
+        required: true
+        schema: 
+          $ref: '#/definitions/TransactionNote'
+    responses:
+      '200':
+        description: Note added to the transaction successfully
+        schema: 
+          $ref: '#/definitions/TransactionResponseNote'
+      '401':
+        description: Unauthorized user
+      '404':
+        description: Note not created
+      '500':
+        description: Internal Server Error
+/transactions/{transactionID}/note/{noteID}:
+  put:
+    tags:
+      - Accounts and Transactions Module
+    summary: Modify transaction note
+    description: API for modifying a note of a transaction
+    security: 
+      - Bearer: []
+    parameters:
+      - in: path
+        name: transactionID
+        description: ID of a transaction
+        required: true
+        type: string
+      - in: path
+        name: noteID
+        description: ID of a note
+        required: true
+        type: string
+      - in: body
+        name: note
+        description: Modify transaction note
+        required: true
+        schema: 
+          $ref: '#/definitions/TransactionNote'
+    responses:
+      '200':
+        description: Note modified successfully
+        schema:
+          $ref: '#/definitions/TransactionResponseNote'
+      '401':
+        description: Unauthorized user
+      '404':
+        description: Note not modified
+      '500':
+        description: Internal Server Error
+  delete:
+    tags:
+      - Accounts and Transactions Module
+    summary: Delete transaction note
+    description: API for deleting a note of a transaction
+    security:
+      - Bearer: []
+    parameters:
+      - in: path
+        name: transactionID
+        description: ID of a transaction
+        required: true
+        type: string
+      - in: path
+        name: noteID
+        description: ID of a note
+        required: true
+        type: string
+    responses:
+      '200':
+        description: Note deleted successfully
+      '401':
+        description: Unauthorized user
+      '404':
+        description: Note not deleted
+      '500':
+        description: Internal Server Error
