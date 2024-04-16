@@ -175,12 +175,12 @@ definitions:
         description: Unauthorized user
       '500':
         description: Internal Server Error
-/account/{accountID}/transactions:
+/accounts/{accountID}/transactions:
   get:
     tags:
       - Accounts and Transactions Module
     summary: Get account transactions
-    description: API for retrieving list of transactions associated with an account
+    description: API for retrieving list of transactions associated with an account, optionally filtered by date.
     security: 
       - Bearer: []
     parameters:
@@ -189,9 +189,21 @@ definitions:
         description: ID of an account
         required: true
         type: string
+      - in: query
+        name: startDate
+        description: Start date for filtering transactions
+        required: false
+        type: string
+        format: date
+      - in: query
+        name: endDate
+        description: End date for filtering transactions
+        required: false
+        type: string
+        format: date
     responses:
       '200':
-        description: All transactions retrieved successfully
+        description: Transactions retrieved successfully
         schema: 
           type: array
           items:
@@ -201,7 +213,32 @@ definitions:
       '404': 
         description: Account not found
       '500':
-        description: Internal Server Error
+        description: Internal Server Error   
+/transactions/{transactionID}:
+  get:
+    tags:
+      - Accounts and Transactions Module
+    summary: Get transaction details by ID
+    description: API for retrieving details of a transaction by its ID
+    security: 
+      - Bearer: []
+    parameters:
+      - in: path
+        name: transactionID
+        description: ID of the transaction
+        required: true
+        type: string
+    responses:
+      '200':
+        description: Transaction details retrieved successfully
+        schema: 
+          $ref: '#/definitions/TransactionDetailsResponse'
+      '401':
+        description: Unauthorized user
+      '404': 
+        description: Transaction not found
+      '500':
+        description: Internal Server Error        
 /transactions/{transactionID}/category:
   patch:
     tags:
@@ -234,7 +271,7 @@ definitions:
       '500': 
         description: Internal Server Error
 /transactions/{transactionID}/note:
-  post:
+  patch:
     tags:
       - Accounts and Transactions Module
     summary: Add transaction note

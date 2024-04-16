@@ -1,7 +1,9 @@
+@import "./variables";
+
 html {
     font-family: Avenir, Helvetica, Arial, sans-serif;   
     text-align: center;
-    color: #2c3e50;
+    color: $color-text;
   }
   
   body {
@@ -28,8 +30,8 @@ html {
     }
     .button-404 {
        align-items: center;
-       background-color: #00bc77;
-       border-color: #00bc77;
+       background-color: $color-primary;
+       border-color: $color-primary;
        color: #fff;
        font-size: 1.1rem;
        font-weight: bold;
@@ -38,4 +40,8 @@ html {
        max-width: 12.5rem;
        padding: 0.8rem;
     }
+  }
+
+  .error-message {
+    color: red ;
   }

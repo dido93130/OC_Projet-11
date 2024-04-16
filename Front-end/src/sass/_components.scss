@@ -1,11 +1,13 @@
+@import "./variables";
+
 .sign-in {
 	&-button {
 		display: block;
 		width: 100%;
 		margin-top: 1rem;		
 		padding: 8px;
-		border-color: #00bc77;
-		background-color: #00bc77;
+		border-color: $color-primary;
+		background-color: $color-primary;
 		color: #fff;
 		font-size: 1.1rem;
 		font-weight: bold;
@@ -19,7 +21,7 @@
 		background-color: white;
 	}
 	&-icon {
-		font-size: 5rem;
+		font-size: 5rem;		
 	}
 }
 
@@ -93,8 +95,8 @@
 .edit-button {
 	padding: 10px;
 	margin-left: 0.5rem;
-	border-color: #00bc77;
-	background-color: #00bc77;
+	border-color: $color-primary;
+	background-color: $color-primary;
 	color: #fff;
 	font-weight: bold;
 }
@@ -104,8 +106,8 @@
 	width: 100%;
 	margin-top: 1rem;
 	padding: 8px;
-	border-color: #00bc77;
-	background-color: #00bc77;
+	border-color: $color-primary;
+	background-color: $color-primary;
 	color: #fff;
 	font-size: 1.1rem;
 	font-weight: bold;	
@@ -146,8 +148,9 @@
 .feature {
 	&-icon {
 		width: 100px;
+		height: 100px;
 		padding: 1rem;
-		border: 10px solid #00bc77;
+		border: 10px solid $color-primary;
 		border-radius: 50%;
 	}
 	&-item {

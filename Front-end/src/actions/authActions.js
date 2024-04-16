@@ -1,8 +1,12 @@
  // actions/authActions.js
   import { createAsyncThunk } from '@reduxjs/toolkit';
-  import { loginSuccess} from '../reducers/userReducer'
+  import { loginSuccess,loginFail } from '../reducers/userReducer'
 
-  export const loginUser = createAsyncThunk(
+  // Définir l'action resetError
+   export const resetError = () => ({ type: 'user/resetError' });
+
+
+   export const loginUser = createAsyncThunk(
     'user/login',
     async ({ email, password }, { dispatch, rejectWithValue }) => {
       try {
@@ -11,18 +15,27 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),      
         });
-        if (!response.ok) throw new Error('Login failed');
+  
+        if (!response.ok) {
+          // Si la réponse est une erreur 400, retournez un rejet avec un message d'erreur approprié
+          if (response.status === 400) {
+            console.clear();
+            return rejectWithValue('Invalid username or password');
+          }
+          // Sinon, lancez une erreur avec le statut de la réponse
+          throw new Error(`Login failed with status: ${response.status}`);
+        }
+  
         const data = await response.json();        
         const token = data.body.token;
-        console.log('Token reçu :', token);
-
-        // Stocker le token dans sessionStorage pour une meilleure sécurité et mettre à jour l'état avec loginSuccess
-        sessionStorage.setItem('token', token); // Sécuriser le token dans la session
-        dispatch(loginSuccess({ token })); // stocker le token dans Redux
-      
-      return token; // retourne le token en cas de succès
+  
+        sessionStorage.setItem('token', token);
+        dispatch(loginSuccess({ token }));
+        
+        return token;
       } catch (error) {
-        return rejectWithValue(error);
+        // Gérez les autres erreurs ici, si nécessaire
+        return rejectWithValue('Login failed');
       }
     }
   );
@@ -64,8 +77,7 @@
           username: data.body.userName
       };        
         return userData;
-      } catch (error) {
-        console.error("Fetch user profile error:", error);
+      } catch (error) {        
         return rejectWithValue(error.toString());
       }
     }
@@ -108,8 +120,7 @@
           username: data.body.userName
         };        
         return updatedUserData;
-      } catch (error) {
-        console.error('Update user profile error:', error);
+      } catch (error) {        
         return rejectWithValue(error.toString());
       }
     }

@@ -12,24 +12,12 @@ const Header = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = sessionStorage.getItem('token');   
-    // Si l'utilisateur est connecté mais le nom d'utilisateur n'est pas connu, récupérez le profil
-    if (isConnected && !userName) {
-      dispatch( fetchUserProfile());      
-    } 
-    // Si l'utilisateur n'est pas connecté, redirigez vers la page d'accueil et nettoyez le token
-    else if (!isConnected && token) {
-      sessionStorage.removeItem('token'); // Retirer le token
-      navigate('/'); // Rediriger vers la page d'accueil
-      // Dispatcher l'action logout pour nettoyer l'état global si nécessaire
-      dispatch(logout());
+    const token = sessionStorage.getItem('token');
+    if (isConnected && !userName && token) {
+      dispatch(fetchUserProfile());
     }
-  }, [isConnected, userName, dispatch, navigate]);
-
-  // Vérifiez isConnected et userName dans la console
-  console.log('Is connected:', isConnected);
-  console.log('Nom d\'utilisateur:', userName);
-
+  }, [isConnected, userName, dispatch]);
+ 
   const handleLogout = () => {
     dispatch(logout()); // Dispatch l'action logout lors du clic sur le bouton de déconnexion    
     navigate('/');    // Rediriger vers la page d'accueil
@@ -41,8 +29,7 @@ const Header = () => {
         <img
           className="main-nav-logo-image"
           src={logo}
-          alt="Argent Bank Logo"
-          aria-label="Argent Bank"
+          alt="logo Argent Bank"          
         />
         <h1 className="sr-only" aria-label="Argent Bank" >Argent Bank</h1>
       </Link>

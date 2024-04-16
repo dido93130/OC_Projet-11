@@ -1,12 +1,14 @@
-// Variables pour les couleurs, les espacements, etc.
-$color-bg-dark: #12002b;
-$color-text: #2c3e50;
-$color-primary: #00bc77;
+@import "./variables";
 
 // Header
 .header {
   margin-bottom: 2rem;
   color: #fff;
+}
+
+.fa-user-circle,
+.fa-sign-out {
+	margin-right: 5px;
 }
 
 // Main content area
@@ -25,7 +27,7 @@ $color-primary: #00bc77;
 			}
 		}
 		&-item {
-			margin-right: 0.5rem;      
+			margin-right: 0.5rem;			      
 			text-decoration: none;
 			&:hover {
 				text-decoration: underline;
@@ -36,12 +38,12 @@ $color-primary: #00bc77;
 			align-items: center;
 			&-image {
 				width: 200px;
+				height: 55px;
 				max-width: 100%;
 			}
 		}
 	}
 }
-
 
 // Footer
 .footer {
