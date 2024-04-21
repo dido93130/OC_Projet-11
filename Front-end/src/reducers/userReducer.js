@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   status: 'VOID', // État initial de la connexion
   isConnected: false, // L'utilisateur est-il connecté ?
-  token: sessionStorage.getItem('token') || null, // Token d'authentification stocké dans sessionStorage ou null
+  token: localStorage.getItem('token') || null, // Token d'authentification stocké dans localStorage ou null
   userName: null, // Nom d'utilisateur
   error: null, // Message d'erreur
 };
@@ -86,7 +86,7 @@ const userSlice = createSlice({
         state.status = 'SUCCEEDED'; // Mise à jour du statut
         state.isConnected = true; // Mise à jour de l'état de connexion
         state.token = action.payload; // Mise à jour du token d'authentification
-        sessionStorage.setItem('token', action.payload); // Stockage du token dans sessionStorage
+        localStorage.setItem('token', action.payload); // Stockage du token dans localStorage
       })
       .addCase(loginUser.rejected, (state, action) => {
         // Reducer appelé en cas d'échec de connexion
