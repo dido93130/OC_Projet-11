@@ -29,7 +29,7 @@ export const loginUser = createAsyncThunk(
       const data = await response.json(); // Analyser la réponse JSON
       const token = data.body.token; // Extraire le token de la réponse
 
-      sessionStorage.setItem('token', token); // Stocker le token dans sessionStorage
+      localStorage.setItem('token', token); // Stocker le token dans localStorage
       dispatch(loginSuccess({ token })); // Dispatch de l'action loginSuccess avec le token
 
       return token; // Retourner le token en cas de succès
@@ -42,7 +42,7 @@ export const loginUser = createAsyncThunk(
 
 // Ajustez une action logout pour qu'elle soit cohérente avec Redux Toolkit
 export const logout = createAsyncThunk('user/logout', async () => { // Créer une action asynchrone pour la déconnexion de l'utilisateur
-  sessionStorage.removeItem('token'); // Supprimer le token stocké dans sessionStorage
+  localStorage.removeItem('token'); // Supprimer le token stocké dans localStorage
 });
 
 // Créer une action asynchrone pour récupérer le profil de l'utilisateur
@@ -50,7 +50,7 @@ export const fetchUserProfile = createAsyncThunk(
   'user/fetchUserProfile', // Nom de l'action
   async (_, { rejectWithValue }) => { // Fonction asynchrone qui ne prend aucun argument et un objet contenant des utilitaires Redux Toolkit
     try {
-      const token = sessionStorage.getItem('token'); // Récupérer le token depuis sessionStorage
+      const token = localStorage.getItem('token'); // Récupérer le token depuis localStorage
       if (!token) {
         throw new Error('No token found'); // Gérer le cas où aucun token n'est trouvé
       }
@@ -89,7 +89,7 @@ export const updateUserProfile = createAsyncThunk(
   'user/updateUserProfile', // Nom de l'action
   async (formData, { rejectWithValue }) => { // Fonction asynchrone qui reçoit les données de formulaire et un objet contenant des utilitaires Redux Toolkit
     try {
-      const token = sessionStorage.getItem('token'); // Récupérer le token depuis sessionStorage
+      const token = localStorage.getItem('token'); // Récupérer le token depuis localStorage
       if (!token) {
         throw new Error('No token found'); // Gérer le cas où aucun token n'est trouvé
       }
