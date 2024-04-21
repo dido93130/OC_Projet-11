@@ -101,13 +101,224 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
+  /user/account:
+    get: 
+      tags:
+        - Accounts and Transactions Module
+      summary: Get all user accounts
+      description: API for retrieving all user accounts
+      security:
+        - Bearer: []
+      responses: 
+        '200':
+          description: All accounts retrieved successfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AccountResponse'
+        '401':
+          description: Unauthorized user
+        '500':
+          description: Internal Server Error
+  /accounts/{accountID}/transactions:
+    get:
+      tags:
+        - Accounts and Transactions Module
+      summary: Get account transactions
+      description: API for retrieving list of transactions associated with an account, optionally filtered by date.
+      security: 
+        - Bearer: []
+      parameters:
+        - in: path
+          name: accountID
+          description: ID of an account
+          required: true
+          type: string
+        - in: query
+          name: startDate
+          description: Start date for filtering transactions
+          required: false
+          type: string
+          format: date
+        - in: query
+          name: endDate
+          description: End date for filtering transactions
+          required: false
+          type: string
+          format: date
+      responses:
+        '200':
+          description: Transactions retrieved successfully
+          schema: 
+            type: array
+            items:
+              $ref: '#/definitions/TransactionsResponse'
+        '401':
+          description: Unauthorized user
+        '404': 
+          description: Account not found
+        '500':
+          description: Internal Server Error   
+  /transactions/{transactionID}:
+    get:
+      tags:
+        - Accounts and Transactions Module
+      summary: Get transaction details by ID
+      description: API for retrieving details of a transaction by its ID
+      security: 
+        - Bearer: []
+      parameters:
+        - in: path
+          name: transactionID
+          description: ID of the transaction
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Transaction details retrieved successfully
+          schema: 
+            $ref: '#/definitions/TransactionDetailsResponse'  # Cette référence doit pointer vers une définition valide
+        '401':
+          description: Unauthorized user
+        '404': 
+          description: Transaction not found
+        '500':
+          description: Internal Server Error
+  /transactions/{transactionID}/category:
+    patch:
+      tags:
+        - Accounts and Transactions Module
+      summary: Update transaction category
+      description: API for updating category of a transaction
+      security: 
+        - Bearer: []
+      parameters:
+        - in: path
+          name: transactionID
+          description: ID of a transaction
+          required: true
+          type: string
+        - in: body
+          name: category
+          description: Modified transaction category
+          required: true
+          schema:
+            $ref: '#/definitions/TransactionCategory'
+      responses:
+        '200':
+          description: Transaction category modified successfully
+          schema: 
+            $ref: '#/definitions/TransactionCategory'
+        '401': 
+          description: Unauthorized user
+        '404': 
+          description: Transaction not found
+        '500': 
+          description: Internal Server Error
+  /transactions/{transactionID}/note:
+    patch:
+      tags:
+        - Accounts and Transactions Module
+      summary: Add transaction note
+      description: API for adding a note to a transaction
+      security: 
+        - Bearer: []
+      parameters:
+        - in: path
+          name: transactionID
+          description: ID of a transaction
+          required: true
+          type: string
+        - in: body
+          name: note
+          description: New transaction note
+          required: true
+          schema: 
+            $ref: '#/definitions/TransactionNote'
+      responses:
+        '200':
+          description: Note added to the transaction successfully
+          schema: 
+            $ref: '#/definitions/TransactionResponseNote'
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Note not created
+        '500':
+          description: Internal Server Error
+  /transactions/{transactionID}/note/{noteID}:
+    put:
+      tags:
+        - Accounts and Transactions Module
+      summary: Modify transaction note
+      description: API for modifying a note of a transaction
+      security: 
+        - Bearer: []
+      parameters:
+        - in: path
+          name: transactionID
+          description: ID of a transaction
+          required: true
+          type: string
+        - in: path
+          name: noteID
+          description: ID of a note
+          required: true
+          type: string
+        - in: body
+          name: note
+          description: Modify transaction note
+          required: true
+          schema: 
+            $ref: '#/definitions/TransactionNote'
+      responses:
+        '200':
+          description: Note modified successfully
+          schema:
+            $ref: '#/definitions/TransactionResponseNote'
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Note not modified
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - Accounts and Transactions Module
+      summary: Delete transaction note
+      description: API for deleting a note of a transaction
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: transactionID
+          description: ID of a transaction
+          required: true
+          type: string
+        - in: path
+          name: noteID
+          description: ID of a note
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Note deleted successfully
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Note not deleted
+        '500':
+          description: Internal Server Error
+
 securityDefinitions:
   Bearer:
     type: apiKey
     name: Authorization
     in: header
+
 definitions:
   User:
+    type: object
     properties:
       email:
         type: string
@@ -125,6 +336,7 @@ definitions:
         type: string
         description: user public name
   Login:
+    type: object
     properties:
       email:
         type: string
@@ -156,211 +368,93 @@ definitions:
     properties:
       userName:
         type: string
-/user/account:
-  get: 
-    tags:
-      - Accounts and Transactions Module
-    summary: Get all user accounts
-    description: API for retrieving all user accounts
-    security:
-      - Bearer: []
-    responses: 
-      '200':
-        description: All accounts retrieved successfully
-        schema:
-          type: array
-          items:
-            $ref: '#/definitions/AccountResponse'
-      '401':
-        description: Unauthorized user
-      '500':
-        description: Internal Server Error
-/accounts/{accountID}/transactions:
-  get:
-    tags:
-      - Accounts and Transactions Module
-    summary: Get account transactions
-    description: API for retrieving list of transactions associated with an account, optionally filtered by date.
-    security: 
-      - Bearer: []
-    parameters:
-      - in: path
-        name: accountID
-        description: ID of an account
-        required: true
+  AccountResponse:
+    type: object
+    properties:
+      accountID:
         type: string
-      - in: query
-        name: startDate
-        description: Start date for filtering transactions
-        required: false
+        description: account ID
+      accountName:
         type: string
-        format: date
-      - in: query
-        name: endDate
-        description: End date for filtering transactions
-        required: false
+        description: account name
+      accountCurrency:
         type: string
-        format: date
-    responses:
-      '200':
-        description: Transactions retrieved successfully
-        schema: 
-          type: array
-          items:
-            $ref: '#/definitions/TransactionsResponse'
-      '401':
-        description: Unauthorized user
-      '404': 
-        description: Account not found
-      '500':
-        description: Internal Server Error   
-/transactions/{transactionID}:
-  get:
-    tags:
-      - Accounts and Transactions Module
-    summary: Get transaction details by ID
-    description: API for retrieving details of a transaction by its ID
-    security: 
-      - Bearer: []
-    parameters:
-      - in: path
-        name: transactionID
+        description: account currency
+      currentBalance:
+        type: number
+        description: current account balance
+        format: double
+  TransactionsResponse:
+    type: object
+    properties:
+      transactionID: 
+        type: string
+        description: transaction ID
+      transactionType:
+        type: string
+        description: type of transaction
+      date:
+        type: string
+        format: date-time
+        description: date of transaction
+      description:
+        type: string
+        description: description of transaction
+      amount:
+        type: number
+        description: transaction amount
+      balance:
+        type: number
+        description: available balance
+        format: double
+      category:
+        type: string
+        description: name of the category
+      note: 
+        type: string
+        description: user note
+  TransactionCategory:
+    type: object
+    properties:
+      category:
+        type: string
+  TransactionNote:
+    type: object
+    properties:
+      note:
+        type: string
+  TransactionResponseNote:
+    type: object
+    properties:
+      note:
+        type: string
+      noteID:
+        type: string
+  TransactionDetailsResponse: 
+    type: object
+    properties:
+      transactionID:
+        type: string
         description: ID of the transaction
-        required: true
+      transactionType:
         type: string
-    responses:
-      '200':
-        description: Transaction details retrieved successfully
-        schema: 
-          $ref: '#/definitions/TransactionDetailsResponse'
-      '401':
-        description: Unauthorized user
-      '404': 
-        description: Transaction not found
-      '500':
-        description: Internal Server Error        
-/transactions/{transactionID}/category:
-  patch:
-    tags:
-      - Accounts and Transactions Module
-    summary: Update transaction category
-    description: API for updating category of a transaction
-    security: 
-      - Bearer: []
-    parameters:
-      - in: path
-        name: transactionID
-        description: ID of a transaction
-        required: true
+        description: Type of transaction (e.g., deposit, withdrawal)
+      date:
         type: string
-      - in: body
-        name: category
-        description: Modified transaction category
-        required: true
-        schema:
-          $ref: '#/definitions/TransactionCategory'
-    responses:
-      '200':
-        description: Transaction category modified successfully
-        schema: 
-          $ref: '#/definitions/TransactionCategory'
-      '401': 
-        description: Unauthorized user
-      '404': 
-        description: Transaction not found
-      '500': 
-        description: Internal Server Error
-/transactions/{transactionID}/note:
-  patch:
-    tags:
-      - Accounts and Transactions Module
-    summary: Add transaction note
-    description: API for adding a note to a transaction
-    security: 
-      - Bearer: []
-    parameters:
-      - in: path
-        name: transactionID
-        description: ID of a transaction
-        required: true
+        format: date-time
+        description: Date and time of the transaction
+      description:
         type: string
-      - in: body
-        name: note
-        description: New transaction note
-        required: true
-        schema: 
-          $ref: '#/definitions/TransactionNote'
-    responses:
-      '200':
-        description: Note added to the transaction successfully
-        schema: 
-          $ref: '#/definitions/TransactionResponseNote'
-      '401':
-        description: Unauthorized user
-      '404':
-        description: Note not created
-      '500':
-        description: Internal Server Error
-/transactions/{transactionID}/note/{noteID}:
-  put:
-    tags:
-      - Accounts and Transactions Module
-    summary: Modify transaction note
-    description: API for modifying a note of a transaction
-    security: 
-      - Bearer: []
-    parameters:
-      - in: path
-        name: transactionID
-        description: ID of a transaction
-        required: true
+        description: Description of the transaction
+      amount:
+        type: number
+        description: Amount of the transaction
+      balance:
+        type: number
+        description: Available balance after the transaction
+      category:
         type: string
-      - in: path
-        name: noteID
-        description: ID of a note
-        required: true
+        description: Category of the transaction (e.g., groceries, entertainment)
+      note: 
         type: string
-      - in: body
-        name: note
-        description: Modify transaction note
-        required: true
-        schema: 
-          $ref: '#/definitions/TransactionNote'
-    responses:
-      '200':
-        description: Note modified successfully
-        schema:
-          $ref: '#/definitions/TransactionResponseNote'
-      '401':
-        description: Unauthorized user
-      '404':
-        description: Note not modified
-      '500':
-        description: Internal Server Error
-  delete:
-    tags:
-      - Accounts and Transactions Module
-    summary: Delete transaction note
-    description: API for deleting a note of a transaction
-    security:
-      - Bearer: []
-    parameters:
-      - in: path
-        name: transactionID
-        description: ID of a transaction
-        required: true
-        type: string
-      - in: path
-        name: noteID
-        description: ID of a note
-        required: true
-        type: string
-    responses:
-      '200':
-        description: Note deleted successfully
-      '401':
-        description: Unauthorized user
-      '404':
-        description: Note not deleted
-      '500':
-        description: Internal Server Error
+        description: Note attached to the transaction
